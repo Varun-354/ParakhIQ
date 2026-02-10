@@ -15,8 +15,8 @@ from pdf_reader import extract_text_from_pdf
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 RESUME_PATH = os.path.join(
-    BASE_DIR, "..", "..", "Resumes", "Sample_Resume_Data.pdf"
-)
+    BASE_DIR, "..", "..", "Resumes", "Sample1.pdf"  # for checking of any random resume , put that resume inside resume folder 
+)                                                              # change the resume .pdf name 
 
 # ---------- PIPELINE ----------
 def run_v2(resume_text):
