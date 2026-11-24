@@ -10,7 +10,7 @@ def ask_llm(prompt):
 
     try:
         response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
+            model="openai/gpt-oss-120b",
             messages=[
                 {
                     "role": "user",
@@ -31,10 +31,12 @@ def ask_llm(prompt):
         return json.loads(text)
 
     except Exception as e:
-        print("Error:", e)
+        print("\n===== GROQ LLM ERROR =====")
+        print("Error Type:", type(e).__name__)
+        print("Error Details:", str(e))
 
         return {
-            "final_verdict": "LLM parsing failed",
+            "final_verdict": "LLM analysis unavailable",
             "career_path": "",
             "job_fit_analysis": "",
             "evidence_based_reasoning": ""
@@ -44,7 +46,8 @@ def ask_llm(prompt):
 # =========================
 # 🔹 PROMPT GENERATOR
 # =========================
-def  get_analyse_prompt(
+
+def get_analyse_prompt(
     resume_text,
     predicted_role,
     top_roles,
@@ -57,10 +60,12 @@ def  get_analyse_prompt(
 You are an ATS-level strict career evaluator.
 
 RULES:
-- Do NOT give generic advice
-- Use ONLY provided data
-- If something is missing, say "insufficient information"
-- Do NOT invent skills or companies
+- Do NOT give generic advice.
+- Use ONLY the provided data.
+- If something is missing, say "insufficient information".
+- Do NOT invent skills, qualifications or companies.
+- Distinguish ML-predicted roles from rule-based recommendations.
+- Provide evidence directly supported by the resume.
 
 INPUT DATA:
 
@@ -82,18 +87,18 @@ Candidate Level:
 Profile Type:
 {profile_type}
 
-OUTPUT FORMAT (STRICT JSON ONLY):
+OUTPUT FORMAT:
+Return ONLY valid JSON. Do not include markdown or code fences.
 
 {{
-  {
-  "final_verdict": "",
-  "career_path": "",
-  "reasoning": [
-    "point 1",
-    "point 2",
-    "point 3"
-  ]
-}
+    "final_verdict": "Overall candidate assessment",
+    "career_path": "Recommended career direction",
+    "job_fit_analysis": "Analysis of candidate suitability",
+    "evidence_based_reasoning": [
+        "Evidence point 1",
+        "Evidence point 2",
+        "Evidence point 3"
+    ]
 }}
 """
 
