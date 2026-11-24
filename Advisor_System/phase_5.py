@@ -10,7 +10,7 @@ def ask_llm(prompt):
 
     try:
         response = client.chat.completions.create(
-            model="openai/gpt-oss-120b",git 
+            model="openai/gpt-oss-120b"
             messages=[
                 {
                     "role": "user",
